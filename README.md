@@ -17,5 +17,3 @@ It’s not just about notes — every week has **clear goals, practice problems,
 - Document progress systematically for **reference and reflection**.  
 
 ---
-
-## 📂 Repository Structure
