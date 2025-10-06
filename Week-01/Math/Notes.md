@@ -19,6 +19,7 @@
 
 ---
 
+
 ## ✍️ 3. Examples
 **Example 1:** Simplify `3 + 5 × 2`  
 👉 Solution: `3 + 10 = 13`  
