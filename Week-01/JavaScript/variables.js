@@ -2,21 +2,28 @@
 const name = "Mazlam Islam Zayaan"
 const father = "Mazharul Islam"
 const mother = "Lammim Islam"
-let ageInMonth = 13
+let ageInMonth = 12
 var message = "Happy Birthday Zayaan!"
 
 const allowedFoods = ['apple', 'banana', 'ots', 'rice', 'sweet potato']
 
 const baby = {
-    name: "Mazhalm Islam",
+    name: "Mazlam Islam",
     nickName: "Zayaan",
-    fullname: `${this.name} ${this.nickName}`,
+    fullName: `${this.name} ${this.nickName}`,
     fatherName: father,
     motherName: mother,
     ageInMonth: ageInMonth,
-    category: null
+    category: null,
+    info: function (){
+        return `
+            Name : ${this.name}.
+            Age: ${this.ageInMonth}
+        `
+    }
 }
 
+console.log(baby.info())
 
 // ⚠️ const means the binding can’t change, but objects/arrays inside can mutate:
 if(ageInMonth > 12) {
