@@ -52,6 +52,21 @@ class SmartBank {
     }
 }
 
+class SavingsAccount extends SmartBank {
+    constructor(initialBalance, interestRate) {
+        super(initialBalance);
+        this.interestRate = interestRate
+
+    }
+
+    addInterest() {
+        const interestAmount = (this.balance * this.interestRate) / 100
+        this.deposit(interestAmount)
+        this.transactionHistory[this.transactionHistory.length-1].type = 'interest'
+    }
+}
+
+
 // Test
 const acc1 = new SmartBank(100)
 acc1.deposit(50)
@@ -61,3 +76,12 @@ console.log(acc1.getBalance()) // 120
 console.log(acc1.getHistory())
 acc1.reset()
 console.log(acc1.getHistory()) // []
+
+const mySavings = new SavingsAccount(1000, 5); // 5% interest
+mySavings.deposit(500);
+mySavings.withdraw(200);
+mySavings.addInterest();
+
+console.log(mySavings.getBalance()); // Should reflect interest
+console.log(mySavings.getHistory()); // All transactions including interest
+
