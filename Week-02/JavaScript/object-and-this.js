@@ -1,4 +1,4 @@
-// Problem 1 — Arrow functions and this
+// Problem 1 — functions and this
 const car = {
     brand: 'BMW',
     model: 'M-02',
