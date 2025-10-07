@@ -23,3 +23,6 @@ const car2 = new Car('Audi', 'A6', 20);
 car1.drive(5);
 console.log(car1.getInfo()); // BMW M-02 - Mileage: 17 km
 console.log(car2.getInfo()); // Audi A6 - Mileage: 20 km
+
+
+// NOTE: JS Classes, which are just syntactic sugar over constructor + prototype.
