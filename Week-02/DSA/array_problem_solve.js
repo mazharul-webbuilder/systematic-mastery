@@ -14,5 +14,20 @@ function sumArray(arr) {
     }, 0)
 }
 
+// Find the Maximum Number
+function findMaximumNumber(arr){
+    return arr.reduce((max, item) => {
+        return item > max ? item : max
+    }, arr[0])
+}
 
-console.log(sumArray([1, 2, 3, 4, 'hello', 10]))
+
+// Reverse arr
+function reverseArr(arr){
+    let lastItemIndex = arr.length - 1
+    return arr.reduce((reverseArr, item) => {
+        reverseArr.push(arr[lastItemIndex])
+        lastItemIndex--
+        return reverseArr
+    }, [])
+}
