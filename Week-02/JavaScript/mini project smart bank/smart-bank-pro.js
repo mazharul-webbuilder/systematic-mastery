@@ -14,9 +14,10 @@ class BankAccount {
     }
 
     async deposit(amount) {
-        new Promise((res) => res(setTimeout(res, 1000)))
+        new Promise((res) => setTimeout(res, 1000))
         this.balance += amount
         this.addNewTransaction('deposit', amount, 'success')
+        return this.balance
     }
 
     async withdraw(amount){
@@ -28,6 +29,7 @@ class BankAccount {
         new Promise((res) => setTimeout(res, 1500))
         this.balance -= amount
         this.addNewTransaction('withdraw', amount, 'success')
+        return this.balance
 
     }
 
@@ -38,7 +40,8 @@ class BankAccount {
             amount,
             ...(reason && {reason}), // Only attach if has reason
             time: new Date().toISOString(),
-            status
+            status,
+            balance: this.balance
         }
         this.transactionHistory.push(formatedTransaction)
     }
@@ -57,18 +60,35 @@ class BankAccount {
     async transfer(toAccount, amount){
         if (amount > this.balance){
             this.addNewTransaction('transfer', amount, 'failed', 'Insufficient balance')
+            return
         }
         toAccount.balance += amount
+        this.balance -= amount
         this.addNewTransaction('transfer', amount, 'success' )
         toAccount.deposit(amount)
+        return this.balance
     }
     addInterest(rate){
         const amount = (rate * this.balance) / 100
         this.balance += amount
         this.addNewTransaction('interest', amount, 'success')
+        return this.balance
     }
 }
 
 const acc1 = new BankAccount('Zayaan', 100)
-await acc1.deposit(100)
+const acc2 = new BankAccount('Lammim', 50)
 
+await acc1.deposit(100)
+await acc1.withdraw(50)
+await acc1.transfer(acc2, 70)
+await acc1.addInterest(10)
+await acc2.addInterest(5)
+
+setTimeout(() => {
+    console.log('Zayaan Balance:', acc1.getBalance())
+    console.log('Lammim Balance:', acc2.getBalance())
+
+    console.log('Zayaan History:', acc1.getHistory())
+
+}, 5000)
