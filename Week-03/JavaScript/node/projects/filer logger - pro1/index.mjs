@@ -1,9 +1,12 @@
-import Logger from "./Logger.mjs";
+import Logger from './logger.mjs';
 
-const logger = new Logger('logs.txt');
+const logger = new Logger('app.log');
 
-await logger.info('Server started');
-await logger.warn('Memory usage high');
-await logger.error('Failed to connect DB');
+await Promise.all([
+    logger.info("Server started"),
+    logger.warn("Low memory"),
+    logger.error("DB connection failed"),
+    logger.info("Retrying connection...")
+]);
 
 console.log(logger.getLogs());
