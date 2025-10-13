@@ -1,5 +1,5 @@
 import fs from 'fs/promises'
-import { formatedTime } from "./utils.mjs";
+import {formatedTime} from "./utils.mjs";
 
 export default class Logger {
     constructor(fileName) {
@@ -10,40 +10,47 @@ export default class Logger {
     }
 
     async info(msg) {
-        this.queue.push({ label: 'INFO', msg });
+        this.queue.push({label: 'INFO', msg});
         await this.processQueue();
     }
 
     async warn(msg) {
-        this.queue.push({ label: 'WARN', msg });
+        this.queue.push({label: 'WARN', msg});
         await this.processQueue();
     }
 
     async error(msg) {
-        this.queue.push({ label: 'ERROR', msg });
+        this.queue.push({label: 'ERROR', msg});
         await this.processQueue();
     }
 
     async processQueue() {
-        if (this.isWriting) return; // Already writing, skip
-
-        this.isWriting = true;
+        if (this.isWriting) return
+        this.isWriting = true
 
         while (this.queue.length > 0) {
-            const { label, msg } = this.queue.shift();
-            const timeStamp = formatedTime();
+            const timeStamp = formatedTime()
+            const {label, msg} = this.queue.shift()
 
-            const formattedLog = `${timeStamp} | ${label} : ${msg}\n`;
-
+            const formatedMsg = `${timeStamp} | ${label} : ${msg} \n`
             try {
-                await fs.appendFile(this.fileName, formattedLog);
-                this.logs.push({ label, timeStamp, msg });
-            } catch (err) {
-                console.error("Failed to write log:", err);
+                const fileStat = await fs.stat(this.fileName)
+
+                if (fileStat.size > 300) {
+                    this.fileName = this.fileName.replace('.log', '') + '_' + new Date().toDateString() + '.txt'
+                }
+                await fs.appendFile(this.fileName, formatedMsg)
+                this.logs.push({
+                    label,
+                    timeStamp,
+                    msg
+                })
+            } catch (e) {
+                console.log(e)
+                console.log('Failed to write log')
             }
         }
-
-        this.isWriting = false;
+        this.isWriting = false
     }
 
     getLogs() {
