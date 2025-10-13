@@ -21,9 +21,18 @@
 
 ---
 
-## 1. Introduction
+##  Introduction
 
-Node.js is a JavaScript runtime built on Chrome's V8 engine that allows you to run JavaScript on the server-side.
+Node.js is not a language or a framework — it’s a runtime environment that lets JavaScript run outside the browser, powered by the V8 engine (the same one Chrome uses).
+- Access files, network, databases, etc
+- Run Background apps, CLIs, scripts, and servers -- al with js
+- Think of Node.js as C++ + V8 + event loop + async I/O magic
+
+### Nodes Core Architecture
+- Call Stack: executes js code (just like browser)
+- Event Loop: manages async tasks and callbacks
+- Thread Pool (libuv): handles heavy I/O tasks (file read/write, network, DNS, etc)
+- Callback Queue / Microtask Queue: same async pattern as browser
 
 ### Key Features
 - **Non-blocking I/O**: Handles multiple operations without waiting
@@ -40,62 +49,10 @@ Node.js is a JavaScript runtime built on Chrome's V8 engine that allows you to r
 - Server-side rendering (SSR)
 - Backend for web/mobile apps
 
----
 
-## 2. Installation & Setup
 
-### Install Node.js
-1. Download from [nodejs.org](https://nodejs.org)
-2. Choose LTS (Long Term Support) version
-3. Verify installation:
-```bash
-node --version
-npm --version
-```
 
-### Project Setup
-```bash
-# Create project folder
-mkdir my-node-app
-cd my-node-app
-
-# Initialize package.json
-npm init -y
-
-# Create entry file
-touch index.js
-```
-
----
-
-## 3. Running Node.js
-
-### Basic Execution
-```bash
-# Run a JavaScript file
-node filename.js
-
-# Run with ES Modules
-node filename.mjs
-
-# Run in interactive mode (REPL)
-node
-```
-
-### REPL (Read-Eval-Print Loop)
-```bash
-node
-> 2 + 2
-4
-> const name = "Zayaan"
-> console.log(name)
-Zayaan
-> .exit
-```
-
----
-
-## 4. Core Concepts
+## Core Concepts
 
 ### The Event Loop
 Node.js uses an event loop to handle asynchronous operations:
@@ -139,7 +96,7 @@ process.exit(1) // Error
 
 ---
 
-## 5. Modules System
+## Modules System
 
 ### CommonJS (Traditional)
 ```js
@@ -228,7 +185,7 @@ console.log(account.getBalance()) // 150
 
 ---
 
-## 6. Built-in Modules
+##  Built-in Modules
 
 ### Path Module
 ```js
@@ -285,7 +242,7 @@ myEmitter.emit('event', { name: 'Zayaan' })
 
 ---
 
-## 7. NPM - Package Manager
+## NPM - Package Manager
 
 ### Basic Commands
 ```bash
@@ -345,7 +302,7 @@ npm install -D nodemon      # Auto-restart server
 
 ---
 
-## 8. Asynchronous Programming
+##  Asynchronous Programming
 
 ### Callbacks
 ```js
@@ -408,7 +365,7 @@ async function getAllData() {
 
 ---
 
-## 9. File System Operations
+##  File System Operations
 
 ### Reading Files
 ```js
@@ -465,7 +422,7 @@ console.log(stats.size)             // Size in bytes
 
 ---
 
-## 10. HTTP & Web Servers
+##  HTTP & Web Servers
 
 ### Basic HTTP Server
 ```js
@@ -507,7 +464,7 @@ const server = http.createServer((req, res) => {
 
 ---
 
-## 11. Express.js Framework
+##  Express.js Framework
 
 ### Setup
 ```bash
@@ -611,7 +568,7 @@ app.use('/api/users', userRouter)
 
 ---
 
-## 12. Working with APIs
+##  Working with APIs
 
 ### Making HTTP Requests
 ```js
@@ -694,7 +651,7 @@ app.delete('/api/users/:id', (req, res) => {
 
 ---
 
-## 13. Database Integration
+##  Database Integration
 
 ### MongoDB with Mongoose
 ```bash
@@ -786,7 +743,7 @@ async function createUser(name, email) {
 
 ---
 
-## 14. Error Handling
+##  Error Handling
 
 ### Try-Catch
 ```js
@@ -844,7 +801,7 @@ process.on('uncaughtException', (error) => {
 
 ---
 
-## 15. Environment Variables
+## Environment Variables
 
 ### Using dotenv
 ```bash
@@ -883,7 +840,7 @@ build/
 
 ---
 
-## 16. Debugging & Testing
+## Debugging & Testing
 
 ### Debugging
 ```bash
@@ -940,7 +897,7 @@ test('adds 1 + 2 to equal 3', () => {
 
 ---
 
-## 17. Best Practices
+##  Best Practices
 
 ### Project Structure
 ```
@@ -1035,15 +992,6 @@ const mongoose = require('mongoose')
 4. Check error stack traces
 5. Use `node --trace-warnings` for warnings
 
----
 
-## Resources
-- [Official Node.js Docs](https://nodejs.org/docs)
-- [NPM Registry](https://npmjs.com)
-- [Express.js Docs](https://expressjs.com)
-- [MDN JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
-
----
 
 **Happy Coding! 🚀**
