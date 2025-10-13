@@ -25,33 +25,41 @@ export default class Logger {
     }
 
     async processQueue() {
-        if (this.isWriting) return
-        this.isWriting = true
+        if (this.isWriting) return;
+        this.isWriting = true;
 
         while (this.queue.length > 0) {
-            const timeStamp = formatedTime()
-            const {label, msg} = this.queue.shift()
+            const timeStamp = formatedTime();
+            const { label, msg } = this.queue.shift();
+            const formattedMsg = `${timeStamp} | ${label} : ${msg}\n`;
 
-            const formatedMsg = `${timeStamp} | ${label} : ${msg} \n`
             try {
-                const fileStat = await fs.stat(this.fileName)
-
-                if (fileStat.size > 300) {
-                    this.fileName = this.fileName.replace('.log', '') + '_' + new Date().toDateString() + '.txt'
+                let fileSize = 0;
+                try {
+                    const fileStat = await fs.stat(this.fileName);
+                    fileSize = fileStat.size;
+                } catch {
+                    // File doesn't exist yet — fine, we’ll create it
                 }
-                await fs.appendFile(this.fileName, formatedMsg)
-                this.logs.push({
-                    label,
-                    timeStamp,
-                    msg
-                })
-            } catch (e) {
-                console.log(e)
-                console.log('Failed to write log')
+
+                // Rotate file if size > 300 bytes
+                if (fileSize > 300) {
+                    const timeSuffix = new Date().toISOString().replace(/[:.]/g, '-');
+                    this.fileName = this.fileName.replace('.log', '') + `_${timeSuffix}.log`;
+                    console.log(`🌀 Log rotated → ${this.fileName}`);
+                }
+
+                await fs.appendFile(this.fileName, formattedMsg);
+                this.logs.push({ label, timeStamp, msg });
+
+            } catch (err) {
+                console.error("❌ Failed to write log:", err);
             }
         }
-        this.isWriting = false
+
+        this.isWriting = false;
     }
+
 
     getLogs() {
         return this.logs;
