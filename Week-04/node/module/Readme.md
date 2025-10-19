@@ -22,25 +22,23 @@ The global object is the top-level scope container that differs between environm
 ### Globally Available Functions
 
 These functions are available in the global scope without requiring any imports:
-```javascript
-console.log()      // Logging to console
-setTimeout()       // Execute code after delay
-clearTimeout()     // Cancel setTimeout
-setInterval()      // Execute code repeatedly
-clearInterval()    // Cancel setInterval
-```
+
+    console.log()      // Logging to console
+    setTimeout()       // Execute code after delay
+    clearTimeout()     // Cancel setTimeout
+    setInterval()      // Execute code repeatedly
+    clearInterval()    // Cancel setInterval
 
 ### Adding to Global Scope
 
 You can add properties to the global object, making them accessible across all files:
-```javascript
-global.sayHello = function() {
-  console.log('Hello from global scope');
-}
 
-// Accessible in any file without requiring
-global.sayHello();
-```
+    global.sayHello = function() {
+      console.log('Hello from global scope');
+    }
+    
+    // Accessible in any file without requiring
+    global.sayHello();
 
 ⚠️ **Warning**: Polluting the global scope is generally discouraged as it can lead to naming conflicts and make code harder to maintain.
 
@@ -53,69 +51,63 @@ Modules are encapsulated pieces of code that help organize and structure your ap
 ### Built-in Modules
 
 Node.js provides several core modules:
-```javascript
-const fs = require('fs');        // File system operations
-const http = require('http');    // HTTP server and client
-const path = require('path');    // File path utilities
-const os = require('os');        // Operating system utilities
-const events = require('events'); // Event emitter
-```
+
+    const fs = require('fs');        // File system operations
+    const http = require('http');    // HTTP server and client
+    const path = require('path');    // File path utilities
+    const os = require('os');        // Operating system utilities
+    const events = require('events'); // Event emitter
 
 ### Exporting from Modules
 
 There are multiple ways to export functionality:
 
-#### Method 1: Individual Exports
-```javascript
-module.exports.log = function(message) {
-  console.log(message);
-}
+**Method 1: Individual Exports**
 
-module.exports.endPoint = 'https://api.example.com';
-```
+    module.exports.log = function(message) {
+      console.log(message);
+    }
+    
+    module.exports.endPoint = 'https://api.example.com';
 
-#### Method 2: Single Export
-```javascript
-module.exports = function(message) {
-  console.log(message);
-}
-```
+**Method 2: Single Export**
 
-#### Method 3: Exports Shorthand
-```javascript
-exports.log = function(message) {
-  console.log(message);
-}
-```
+    module.exports = function(message) {
+      console.log(message);
+    }
+
+**Method 3: Exports Shorthand**
+
+    exports.log = function(message) {
+      console.log(message);
+    }
 
 ⚠️ **Note**: Don't reassign `exports` directly (e.g., `exports = {}`). Use `module.exports` for complete replacement.
 
 ### Importing Modules
-```javascript
-const myModule = require('./myModule');
-myModule.log('Hello');
-console.log(myModule.endPoint);
-```
+
+    const myModule = require('./myModule');
+    myModule.log('Hello');
+    console.log(myModule.endPoint);
 
 ## How Modules Work Internally
 
 ### Module Wrapper Function
 
 When Node.js loads a module, it doesn't execute the code directly. Instead, it wraps your code in an IIFE (Immediately Invoked Function Expression):
-```javascript
-(function(exports, require, module, __filename, __dirname) {
-  // Your module code goes here
-  
-  var sayHello = function() {
-    console.log('Hello');
-  }
-  
-  module.exports.log = log;
-  module.exports.endPoint = url;
-  
-  // Your code ends here
-});
-```
+
+    (function(exports, require, module, __filename, __dirname) {
+      // Your module code goes here
+      
+      var sayHello = function() {
+        console.log('Hello');
+      }
+      
+      module.exports.log = log;
+      module.exports.endPoint = url;
+      
+      // Your code ends here
+    });
 
 ### The Five Parameters
 
@@ -136,18 +128,17 @@ This wrapper function provides several benefits:
 ### Module Object Structure
 
 When you log the `module` object, you'll see:
-```code
-Module {
-  id: '.',
-  path: '/path/to/directory',
-  exports: { log: [Function], endPoint: 'url' },
-  parent: null,
-  filename: '/path/to/file.js',
-  loaded: false,
-  children: [],
-  paths: [ /* module search paths */ ]
-}
-```
+
+    Module {
+      id: '.',
+      path: '/path/to/directory',
+      exports: { log: [Function], endPoint: 'url' },
+      parent: null,
+      filename: '/path/to/file.js',
+      loaded: false,
+      children: [],
+      paths: [ /* module search paths */ ]
+    }
 
 **Key Properties:**
 - `exports`: What the module exposes to other files
@@ -158,26 +149,24 @@ Module {
 ## Module Caching
 
 Node.js caches modules after the first load:
-```js
-// First require - module code executes
-const mod1 = require('./myModule');
 
-// Second require - returns cached version
-const mod2 = require('./myModule');
-
-console.log(mod1 === mod2); // true
-```
+    // First require - module code executes
+    const mod1 = require('./myModule');
+    
+    // Second require - returns cached version
+    const mod2 = require('./myModule');
+    
+    console.log(mod1 === mod2); // true
 
 ### Cache Location
 
 Cached modules are stored in `require.cache`:
-```javascript
-// View all cached modules
-console.log(require.cache);
 
-// Clear cache for a specific module (rarely needed)
-delete require.cache[require.resolve('./myModule')];
-```
+    // View all cached modules
+    console.log(require.cache);
+    
+    // Clear cache for a specific module (rarely needed)
+    delete require.cache[require.resolve('./myModule')];
 
 ## Best Practices
 
@@ -203,7 +192,11 @@ delete require.cache[require.resolve('./myModule')];
 - **Module wrapper** provides automatic parameters and scope isolation
 - **Each file is a module** with its own private scope
 - **`module.exports`** defines what a module exposes
-- **`require()`** imports and caches modules
+- **`require()` ** imports and caches modules
 - **Modules are cached** after first load for performance
 
 ---
+
+**Further Reading:**
+- [Node.js Official Documentation - Modules](https://nodejs.org/api/modules.html)
+- [Node.js Official Documentation - Globals](https://nodejs.org/api/globals.html)
