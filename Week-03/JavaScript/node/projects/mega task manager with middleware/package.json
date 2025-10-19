@@ -1,0 +1,13 @@
+{
+  "name": "mega-task-manager",
+  "description": "Task manager with crud and authentication",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.1"
+  }
+}
