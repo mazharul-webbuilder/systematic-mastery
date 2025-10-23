@@ -80,13 +80,45 @@ async function updateCourse(id) {
     course.author = 'Mazharul Islam'
 
     course.set({
-        isPublished : true,
-        author : 'Mazharul Islam'
+        isPublished: true,
+        author: 'Mazharul Islam'
     })
     const result = await course.save();
     console.log(result)
 
+// MongoDB provides a variety of update operators, including:
+// $set   - Sets the value of a field
+// $inc   - Increments the value of a field
+// $mul   - Multiplies the value of a field
+// $rename - Renames a field
+// $unset - Removes a field
+// $min   - Updates the field if the specified value is less than the current value
+// $max   - Updates the field if the specified value is greater than the current value
+// $currentDate - Sets the field to the current date
+// $addToSet   - Adds a value to an array only if it doesn’t already exist
+// $pop   - Removes the first or last element of an array
+// $pull  - Removes all array elements that match a condition
+// $push  - Adds an element to an array
+// $each  - Used with $push to add multiple elements
+// $position - Used with $push to specify the position to insert an element
+// $slice    - Used with $push to limit the number of array elements
+// $sort     - Used with $push to sort array elements
+
+    const course2 = await Course.findByIdAndUpdate({_id: id}, {
+        $set: {
+            author: 'Mosh',
+            isPublished: false
+        }
+    }, {new: true})
+
+    console.log(course2)
+
+
 }
 
-getCourses()
+async function removeCourse(id){
+   const result = await Course.deleteOne({_id: id})
+}
+
+// getCourses()
 // updateCourse('68f9e4abc27fb719467399c6')
