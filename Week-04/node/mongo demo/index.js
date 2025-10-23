@@ -38,11 +38,30 @@ async function getCourses() {
     // lte (less than or equal to)
     // in
     // nin (not in)
+
+    // Logical Operators
+    // or
+    // and
+
+    // Pagination
+    const pageNumber = 1
+    const pageSize = 10
+
     const courses = await Course
-        .find({author: 'Mosh', isPublished: true})
-        .limit(1)
+        // .find({price: {$gte: 10, $lte: 20}})
+        // .find(({price: {$in: [10, 15, 20]}}))
+        // .find({author: 'Mosh', isPublished: true})
+        // .find()
+        // .or([{author: 'Mosh'}, {isPublished: true}])
+        // .and([{author: 'Mosh'}, {isPublished: true}])
+        .find({author: /^Mosh/}) // Start with Mosh
+        .find({author: /Hamedani$/}) // end with Hamedani
+        .find({author: /.*Mosh.*/i})
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
         .sort({name: 1}) // ascending order
         .select({name: 1, tags: 1})
+
     console.log(courses)
 }
 
