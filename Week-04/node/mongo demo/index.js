@@ -5,14 +5,45 @@ mongoose.connect('mongodb://localhost/mongoplayground')
     .catch(() => console.log('Could not connect to mongodb'))
 
 const CourseSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true,
+        minLength: 5,
+        maxlength: 255,
+    },
+    category: {
+        type: String,
+        enum: ['Web', 'Mobile']
+    },
     author: String,
-    tags: [String],
+    tags: {
+        type: Array,
+        validate: {
+            isAsync: true,
+            validator: function (v, callback) {
+                setTimeout(() => {
+                    const result = v.length() > 0
+                    callback(result)
+                }, 1000)
+            },
+            message: 'A course should have at least a tag'
+        }
+    },
     date: {
         type: Date,
         default: Date.now
     },
-    isPublished: Boolean
+    isPublished: Boolean,
+    price: {
+        type: Number,
+        required: function () {
+            return this.isPublished
+        },
+        min: 10,
+        max: 200,
+        get: v => Math.round(v), // getter
+        set: v => Math.round(v) // setter
+    }
 })
 
 const Course = mongoose.model('Course', CourseSchema)
@@ -116,8 +147,8 @@ async function updateCourse(id) {
 
 }
 
-async function removeCourse(id){
-   const result = await Course.deleteOne({_id: id})
+async function removeCourse(id) {
+    const result = await Course.deleteOne({_id: id})
 }
 
 // getCourses()
