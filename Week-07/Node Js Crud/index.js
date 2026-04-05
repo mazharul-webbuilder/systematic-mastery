@@ -1,10 +1,17 @@
 const createApp = require('./app');
+const connectDB = require('./config/db');
 
 const hostname = '127.0.0.1';
 const port = 3001;
 
-const server = createApp();
+async function main() {
+  await connectDB();
 
-server.listen(port, hostname, () => {
-  console.log('Server running at http://' + hostname + ':' + port + '/');
-});
+  const server = createApp();
+
+  server.listen(port, hostname, () => {
+    console.log('Server running at http://' + hostname + ':' + port + '/');
+  });
+}
+
+main();
