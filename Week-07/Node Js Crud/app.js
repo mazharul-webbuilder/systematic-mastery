@@ -1,6 +1,7 @@
 const http = require('http');
 const homeHandler = require('./routes/home');
 const userRoutes = require('./routes/users');
+const postRoutes = require('./routes/posts');
 
 function createApp() {
   return http.createServer((req, res) => {
@@ -23,6 +24,17 @@ function createApp() {
     if (req.url.startsWith('/users')) {
       return parseBody(req, () => {
         const handled = userRoutes(req, res);
+        if (!handled) {
+          res.statusCode = 404;
+          res.end(JSON.stringify({ error: 'Not Found' }));
+        }
+      });
+    }
+
+    // Post routes (need body parsing)
+    if (req.url.startsWith('/posts')) {
+      return parseBody(req, () => {
+        const handled = postRoutes(req, res);
         if (!handled) {
           res.statusCode = 404;
           res.end(JSON.stringify({ error: 'Not Found' }));
