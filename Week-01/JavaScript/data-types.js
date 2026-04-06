@@ -5,7 +5,7 @@ let name = 'Zayaan'
 let ageInMonth = 11
 let isHappy = false
 let birthDayMessage = null
-let gotoSchool;
+let gotoSchool; // undefined
 let sym1 = Symbol('love father')
 let sym2 = Symbol('love father')
 let largeNumber = 123456789012345678901234567890n;

@@ -1,24 +1,28 @@
 /**
  * ⚡ JAVASCRIPT EVENT LOOP RULES (Execution Priority) ⚡
  * * The Event Loop processes tasks in batches based on priority:
+ *
  * * 1.  CALL STACK (Synchronous Code):
  * - Runs IMMEDIATELY until empty (e.g., console.log, new Promise constructor code).
  * - Blocks all other execution while running.
+ *
  * * 2.  MICROTASK QUEUE (High Priority):
  * - Runs COMPLETELY after the Call Stack is empty, and after *each* Macrotask.
  * - Tasks: Promise callbacks (.then(), .catch()), async/await continuations.
  * - Rule: New Microtasks added during this phase are run in the *same* cycle.
+ *
  * * 3.  MACROTASK QUEUE (Lower Priority):
  * - Runs ONLY when both the Call Stack AND Microtask Queue are empty.
  * - Tasks: setTimeout(), setInterval().
  * - Rule: Only ONE Macrotask is processed per loop cycle.
+ *
  * * PRIORITY FLOW:
  * [Call Stack] -> [Microtasks] -> [1 Macrotask] -> [Microtasks] -> [1 Macrotask]...
  */
 
 // JS Async Challenge #1
 function eventLoopExample1(){
-    console.log("🥇 A"); // 1️⃣ Runs immediately (synchronous)
+    console.log("🥇 A"); // Runs immediately (synchronous)
 
     setTimeout(() => console.log("🥈 B - setTimeout 0"), 0); // scheduled (macrotask queue)
 
@@ -29,7 +33,7 @@ function eventLoopExample1(){
 
     Promise.resolve().then(() => console.log("🎖️ E - promise 2")); // (microtask queue)
 
-    console.log("🏆 F"); // 2️⃣ synchronous
+    console.log("🏆 F"); // synchronous
 }
 // eventLoop()
 // Output
@@ -72,7 +76,7 @@ function eventLoopExample2(){
 function challenge3() {
     console.log("A");
 
-    setTimeout(() => console.log("B - setTimeout 1"), 0);
+    setTimeout(() => console.log("B - setTimeout 1"), 5000);
 
     Promise.resolve().then(() => {
         console.log("C - Promise 1");
@@ -89,7 +93,7 @@ function challenge3() {
         console.log("G - async after await");
     })();
 
-    setTimeout(() => console.log("H - setTimeout 2"), 0);
+    setTimeout(() => console.log("H - setTimeout 2"), 3000);
 
     console.log("I - End");
 }
@@ -101,11 +105,11 @@ function challenge3() {
 // F - async start
 // I - End
 // C - Promise 1
-// D - Inner Promise
-// E - Promise 1 then chain
 // G - async after await
-// B - setTimeout 1
+//     D - Inner Promise
+// E - Promise 1 then chain
 // H - setTimeout 2
+// B - setTimeout 1
 
 /*
 Step | Output                | Call Stack             | Microtask Queue (Prioritized)              | Macrotask Queue                          | Notes

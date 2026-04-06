@@ -55,7 +55,11 @@ console.log(obj1.name, obj2.name);
 
 --- Output: 10 20
 --- Output: 1,2,3,4 1,2,3,4
---- Output: dont know
+--- Output: Zayaan Lammim
+In JavaScript, primitive types are copied by value, while reference types are copied by reference. The code above shown
+has done shallow copy of object where name is changed in obj2 but obj1 is not affected.
+If there were a reference function inside original object, then it would have been copied by reference and changed on
+copied object will also be changed in original object.
 
 ### A3. Type Coercion Traps (4 points)
 
@@ -70,7 +74,7 @@ console.log([] == false);
 console.log([] === false);
 ```
 
-**Your Answer:** Output: true, false, dont know ........
+**Your Answer:** Output: true, false, true, false, true, false
 
 ---
 
@@ -93,7 +97,8 @@ console.log(Object.keys(obj));
 console.log(Object.getOwnPropertySymbols(obj));
 ```
 
-**Your Answer:** Output: dont know
+**Your Answer:** Output: false, Value 1, [ 'name' ], [ 'Symbol(user)', 'Symbol(user)' ].
+Explanation: Symbol is a primitive type that is unique and cannot be duplicated. It is used as a key for object properties.
 
 ---
 
@@ -121,7 +126,9 @@ const arrowGreet = () => console.log('Hey');
 arrowGreet();
 ```
 
-**Your Answer:** Output: Hello, Hi, Hey
+**Your Answer:** Output: Hello and then thrown error
+Explanation: Function declarations are hoisted, while function expressions are not. Scenario 2 will throw an error because greet is not defined.
+Scenario 3 will work because arrow functions are not hoisted.
 
 ---
 
@@ -136,15 +143,32 @@ Implement a `createRateLimiter` function using closures that:
 
 ```javascript
 function createRateLimiter(maxCalls, windowMs) {
-    // Your implementation here
+    const calls = [];
+
+    return function () {
+        const now = Date.now();
+
+        // Remove timestamps older than windowMs
+        while (calls.length && now - calls[0] > windowMs) {
+            console.log(now, calls[0], now - calls[0])
+            calls.shift(); // Remove all calls that expired
+        }
+
+        if (calls.length < maxCalls) {
+            calls.push(now);
+            console.log("Request Status: Allowed");
+        } else {
+            console.log("Request Status: Rate limit exceeded");
+        }
 }
 
 // Test
-const limiter = createRateLimiter(3, 10000);
-console.log(limiter()); // Allowed
-console.log(limiter()); // Allowed
-console.log(limiter()); // Allowed
-console.log(limiter()); // Rate limit exceeded
+    const limiter = createRateLimiter(3, 10000); // max 3 calls per 10s
+    limiter(); // Allowed
+    limiter(); // Allowed
+    limiter(); // Allowed
+    limiter(); // Rate limit exceeded
+    setTimeout(() => limiter(), 11000); // Allowed again after 11s
 ```
 
 ---
@@ -168,6 +192,45 @@ console.log(validateEmail('test@example.com')); // true
 **Your Code:**
 
 ```javascript
+function createValidator(rules) {
+    return function (value) {
+        for (let rule of rules) {
+            // Handle rules with parameters (e.g., "minLength:8")
+            let [ruleName, param] = rule.split(":");
+
+            switch (ruleName) {
+                case "required":
+                    if (value === null || value === undefined || value === "") {
+                        return false;
+                    }
+                    break;
+
+                case "minLength":
+                    if (value.length < parseInt(param)) {
+                        return false;
+                    }
+                    break;
+
+                case "maxLength":
+                    if (value.length > parseInt(param)) {
+                        return false;
+                    }
+                    break;
+
+                case "isEmail":
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                        return false;
+                    }
+                    break;
+
+                default:
+                    throw new Error(`Unknown rule: ${ruleName}`);
+            }
+        }
+        return true; // Passed all rules
+    };
+}
 
 ```
 
@@ -239,6 +302,7 @@ counter.decrement(); // Works
 ```
 
 **Your Answer:**
+Explanation: Arrow functions do not have their own this context. They inherit it from the parent scope. In this case, this.count is undefined.
 
 ---
 
